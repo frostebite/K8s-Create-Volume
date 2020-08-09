@@ -8,28 +8,18 @@ inputs:
     description: 'Base64 encoded kubeconfig, either this or the KUBECONFIG environment variable is required'
     required: true
     default: ''
-  volume:  # id of input
-    description: 'Kubernetes PV to mount'
+  name:
+    require: true
+    default: ''
+    description: 'Name of the Kubernetes Persistent Volume Claim'
+  size:
     required: true
-    default: ''
-  sourcePath:  # id of input
-    description: 'Folder to download from the PV'
-    required: false
-    default: ''
-  outputPath:  # id of input
-    description: 'Folder to download the PV into'
-    required: false
-    default: 'k8s-volume-download'
-  timeout:
-    description: 'number of seconds to wait when a pod is unschedulable'
-    required: false
-    default: '260'
+    default: '5Gi'
+    description: 'Amount of disc space to assign the Kubernetes Persistent Volume (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.kubeConfig }}
-    - ${{ inputs.volume }}
-    - ${{ inputs.sourcePath }}
-    - ${{ inputs.outputPath }}
-    - ${{ inputs.timeout }}
+    - ${{ inputs.name }}
+    - ${{ inputs.size }}
